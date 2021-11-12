@@ -1,3 +1,9 @@
+# Idea
+.idea
+
+# Build files
+/cmake-build*
+
 # Prerequisites
 *.d
 
