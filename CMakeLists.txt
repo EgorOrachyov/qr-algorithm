@@ -1,17 +1,14 @@
 cmake_minimum_required(VERSION 3.19)
-project(qr_decomposition)
-
-function(set_compile_options target)
-    target_compile_options(${target} PUBLIC /openmp)
-    if (${CMAKE_BUILD_TYPE} STREQUAL Release)
-        message(STATUS "Configure flags for Release build")
-        target_compile_options(${target} PUBLIC /O2)
-        target_compile_options(${target} PUBLIC /Oi /Ot /Oy /Ob2 /GF /Gy)
-        target_compile_options(${target} PUBLIC /fp:precise)
-    endif ()
-endfunction()
+project(qr_algo_omp)
 
 set(CMAKE_CXX_STANDARD 17)
-set(QR_SOURCES qr_algorithm.cpp)
-add_executable(qr_algo ${QR_SOURCES})
-set_compile_options(qr_algo)
+add_executable(qr_algo qr_algorithm.cpp)
+
+target_compile_options(qr_algo PUBLIC /openmp)
+
+if (${CMAKE_BUILD_TYPE} STREQUAL Release)
+    message(STATUS "Configure flags for Release build")
+    target_compile_options(qr_algo PUBLIC /O2)
+    target_compile_options(qr_algo PUBLIC /Oi /Ot /Oy /Ob2 /GF /Gy)
+    target_compile_options(qr_algo PUBLIC /fp:precise)
+endif ()

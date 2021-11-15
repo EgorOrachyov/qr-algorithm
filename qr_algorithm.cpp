@@ -125,8 +125,6 @@ int main(int argc, const char *const *argv) {
     int samples = 4;
     int threads_count = 8;
     int iterations = 10;
-    double average = 0.0;
-    double sd = 0.0;
     std::string matrix_path = "../a_2500.mtx";
     std::vector<double> times;
 
@@ -149,10 +147,10 @@ int main(int argc, const char *const *argv) {
         times.push_back(static_cast<double>(std::chrono::duration_cast<ns>(clock::now() - time_point).count()) / 1e9f);
     }
 
-    average = std::reduce(times.begin(), times.end(), 0.0) / static_cast<double>(samples);
-    sd = std::transform_reduce(times.begin(), times.end(), 0.0, std::plus<>(),
-                               [=](auto x) { return (x - average) * (x - average); })
-         / static_cast<double>(samples - 1);
+    double average = std::reduce(times.begin(), times.end(), 0.0) / static_cast<double>(samples);
+    double sd = std::transform_reduce(times.begin(), times.end(), 0.0, std::plus<>(),
+                                      [=](auto x) { return (x - average) * (x - average); })
+                / static_cast<double>(samples - 1);
     std::cout << average << " sec " << sd << " sec" << std::endl;
 
     return 0;
