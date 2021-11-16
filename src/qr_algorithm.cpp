@@ -144,7 +144,7 @@ int main(int argc, const char *const *argv) {
         return -1;
     }
 
-    using T = float;
+    using T = double;
     using clock = std::chrono::steady_clock;
     using ns = std::chrono::nanoseconds;
 

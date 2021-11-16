@@ -12,7 +12,7 @@ def main():
     parser.add_argument("--exec-folder", default="cmake-build-release")
     args = parser.parse_args()
 
-    threads = [16, 8, 4, 2, 1]
+    threads = [32, 16, 8, 4, 2, 1]
     samples = [20, 5]
     iterations = [10, 15]
     files = ["a_500.mtx", "a_2500.mtx"]

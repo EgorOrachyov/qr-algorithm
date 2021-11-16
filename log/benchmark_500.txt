@@ -1,0 +1,12 @@
+Exec samples=20 threads=32 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 0.339755, 0.330129, 0.344758, 1.32219e-05 (all in sec)
+Exec samples=20 threads=16 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 0.215532, 0.210641, 0.231972, 2.22676e-05 (all in sec)
+Exec samples=20 threads=8 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 0.321573, 0.318238, 0.336549, 1.98395e-05 (all in sec)
+Exec samples=20 threads=4 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 0.569846, 0.566989, 0.577055, 8.85008e-06 (all in sec)
+Exec samples=20 threads=2 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 1.09073, 1.08852, 1.09336, 2.39131e-06 (all in sec)
+Exec samples=20 threads=1 iterations=10 file=a_500.mtx
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 res: 2.13261, 2.12601, 2.18259, 0.000153574 (all in sec)

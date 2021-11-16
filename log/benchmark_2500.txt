@@ -1,0 +1,12 @@
+Exec samples=5 threads=32 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 79.2962, 73.9739, 82.0688, 12.2745 (all in sec)
+Exec samples=5 threads=16 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 68.7445, 65.5262, 73.1559, 8.62211 (all in sec)
+Exec samples=5 threads=8 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 83.3964, 82.8053, 84.4647, 0.489001 (all in sec)
+Exec samples=5 threads=4 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 125.174, 124.745, 125.809, 0.239652 (all in sec)
+Exec samples=5 threads=2 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 236.425, 230.624, 258.669, 154.639 (all in sec)
+Exec samples=5 threads=1 iterations=15 file=a_2500.mtx
+0 1 2 3 4 res: 449.332, 448.534, 450.658, 0.781371 (all in sec)
