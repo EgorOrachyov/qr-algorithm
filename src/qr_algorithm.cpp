@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 template<typename T = double>
 struct Matrix {
@@ -138,30 +139,43 @@ std::vector<T> qr_algorithm(Matrix<T> &A, int iterations = 10) {
 }
 
 int main(int argc, const char *const *argv) {
+    if (argc != 5) {
+        std::cerr << "Arguments count mismatched";
+        return -1;
+    }
+
+    using T = float;
     using clock = std::chrono::steady_clock;
     using ns = std::chrono::nanoseconds;
 
-    int samples = 10;
-    int threads_count = 8;
-    int iterations = 10;
-    std::string matrix_path = "../data/a_4.mtx";
+    int samples = std::atoi(argv[1]);
+    int threads_count = std::atoi(argv[2]);
+    int iterations = std::atoi(argv[3]);
+    std::string matrix_path = argv[4];
     std::vector<double> times;
 
     omp_set_num_threads(threads_count);
 
-    Matrix<double> A = load_matrix<double>(matrix_path); // Col major
+    Matrix<T> A = load_matrix<T>(matrix_path); // Col major
 
     for (int i = 0; i < samples; i++) {
         auto time_point = clock::now();
         qr_algorithm(A, iterations);
-        times.push_back(static_cast<double>(std::chrono::duration_cast<ns>(clock::now() - time_point).count()) / 1e9f);
+        times.push_back(static_cast<double >(std::chrono::duration_cast<ns>(clock::now() - time_point).count()) / 1e9f);
+        std::cout << i << " ";
     }
 
     double average = std::reduce(times.begin(), times.end(), 0.0) / static_cast<double>(samples);
+    double min_time = *std::min_element(times.begin(), times.end());
+    double max_time = *std::max_element(times.begin(), times.end());
     double sd = std::transform_reduce(times.begin(), times.end(), 0.0, std::plus<>(),
                                       [=](auto x) { return (x - average) * (x - average); })
                 / static_cast<double>(samples - 1);
-    std::cout << average << " sec " << sd << " sec" << std::endl;
+    std::cout << "res: "
+              << average << ", "
+              << min_time << ", "
+              << max_time << ", "
+              << sd << " (all in sec)" << std::endl;
 
     return 0;
 }
