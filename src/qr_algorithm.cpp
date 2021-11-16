@@ -92,7 +92,7 @@ void qr_decomposition(const Matrix<T> &A /* Col-major */,
                 q_i_dot_q_j += Q.v[i * n + k] * Q.v[j * n + k];
             for (int k = 0; k < n; k++)
                 Q.v[j * n + k] -= q_i_dot_q_j * Q.v[i * n + k];
-            R.v[j * n + i] += q_i_dot_q_j;
+            R.v[i * n + j] += q_i_dot_q_j;
         }
     }
 }
@@ -109,41 +109,51 @@ void multiply(const Matrix<T> &A /* Row-major */,
     for (int j = 0; j < n; j++) {
         for (int i = 0; i < n; i++) {
             T sum = 0;
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < n; k++)
                 sum += A.v[i * n + k] * B.v[j * n + k];
-            }
-            // Store as column major
+            // Store as Col major
             C.v[j * n + i] = sum;
         }
     }
+}
+
+template<typename T>
+std::vector<T> qr_algorithm(Matrix<T> &A, int iterations = 10) {
+    Matrix<T> X = A;  // Col major
+    Matrix<T> Q(A.n); // Col major
+    Matrix<T> R(A.n); // Row major
+
+    for (int k = 0; k < iterations; k++) {
+        qr_decomposition(X, Q, R);
+        multiply(R, Q, X);
+    }
+
+    std::vector<T> eigenvalues;
+    eigenvalues.reserve(X.n);
+
+    for (int i = 0; i < X.n; i++)
+        eigenvalues.push_back(X.v[i * X.n + i]);
+
+    return eigenvalues;
 }
 
 int main(int argc, const char *const *argv) {
     using clock = std::chrono::steady_clock;
     using ns = std::chrono::nanoseconds;
 
-    int samples = 4;
+    int samples = 10;
     int threads_count = 8;
     int iterations = 10;
-    std::string matrix_path = "../a_2500.mtx";
+    std::string matrix_path = "../data/a_4.mtx";
     std::vector<double> times;
 
     omp_set_num_threads(threads_count);
 
-    Matrix<double> A = load_matrix<double>(matrix_path); // Column major
-    Matrix<double> A_next(A.n); // Column major
-    Matrix<double> Q(A.n); // Column major
-    Matrix<double> R(A.n); // Row major
+    Matrix<double> A = load_matrix<double>(matrix_path); // Col major
 
     for (int i = 0; i < samples; i++) {
         auto time_point = clock::now();
-
-        for (int k = 0; k < iterations; k++) {
-            qr_decomposition(A, Q, R);
-            multiply(R, Q, A_next);
-            std::swap(A, A_next);
-        }
-
+        qr_algorithm(A, iterations);
         times.push_back(static_cast<double>(std::chrono::duration_cast<ns>(clock::now() - time_point).count()) / 1e9f);
     }
 
