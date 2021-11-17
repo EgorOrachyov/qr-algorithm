@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(qr_algo_omp)
+project(qr_algorithm)
 
 set(CMAKE_CXX_STANDARD 17)
 add_executable(qr_algo src/qr_algorithm.cpp)
